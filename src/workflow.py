@@ -1,4 +1,5 @@
-from google.adk.agents.workflow import SequentialAgent
+# Simpler import path used in newer ADK versions
+from google.adk.agents import SequentialAgent
 from src.agents import research_agent, strategist_agent, generator_agent
 
 def build_orchestrator():
