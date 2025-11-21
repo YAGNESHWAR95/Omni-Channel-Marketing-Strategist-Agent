@@ -1,27 +1,23 @@
-import os
-from google.adk.agents import Agent, LlmAgent
-from google.adk.agents.workflow import SequentialAgent
-from google.adk.tools import google_search # Built-in tool for RAG
-from google.adk.tools import FunctionTool
+import json # F401: Used by save_content_brief_to_state
+import os 
 from typing import Dict, Any
-import json
 
-# --- CONFIGURATION (Ensure GOOGLE_API_KEY is set in your .env file) ---
-MODEL_NAME = 'gemini-2.5-flash' # Good balance of speed and capability
+from google.adk.agents import Agent
+from google.adk.agents.workflow import SequentialAgent
+from google.adk.tools import google_search, FunctionTool
+
+# --- CONFIGURATION ---
+MODEL_NAME = 'gemini-2.5-flash' 
 
 # ----------------------------------------------------------------------
-## 1. Define Custom Tool (Example: Structured Output/Mock Integration)
-
-# This Pydantic model defines the structure of the data the Content Strategist MUST output.
-# You would use a library like pydantic for production, but for ADK instruction,
-# you define the schema in the instruction prompt.
+## 1. Define Custom Tool (Structured Output/Mock Integration)
 
 def save_content_brief_to_state(brief_json: str) -> str:
     """Saves the structured content brief (JSON string) to a simulated database. 
     This is an example of a custom tool the agent can call."""
     try:
-        # In a real app, you'd parse brief_json and save it to a database
-        brief_data = json.loads(brief_json)
+        # F821: This was the original error (fixed by 'import json')
+        brief_data = json.loads(brief_json) 
         print(f"**[Tool Called]** Saving Strategy: Topic='{brief_data.get('topic')}'")
         return "SUCCESS: Content brief saved and ready for the drafting agent."
     except Exception as e:
@@ -41,22 +37,25 @@ SaveBriefTool = FunctionTool(
 research_agent = Agent(
     model=MODEL_NAME,
     name='Market_Research_Agent',
-    instruction='You are an expert market researcher. Use the Google Search tool to find 3 key competitive strategies and 3 current trends for the given user request. Summarize concisely.',
     description='Specialist in web research and competitive analysis.',
+    instruction=(
+        'You are an expert market researcher. Use the Google Search tool to find 3 key competitive '
+        'strategies and 3 current trends for the given user request. Summarize concisely.'
+    ),
     tools=[google_search] 
 )
 
 # 2.2. Content Strategist Agent (Uses Structured Output/Tool)
-# The output_key ensures the result is passed into the Sequential Agent's state.
 strategist_agent = Agent(
     model=MODEL_NAME,
     name='Content_Strategist_Agent',
-    instruction='''You are a strategic planner. Based on the research provided, define a Content Brief. 
-        Your output MUST be a valid JSON object with keys: "topic", "target_platform" (e.g., Twitter), 
-        "keywords", "call_to_action", and "main_talking_points" (list of strings).
-        Once generated, you MUST call the `save_brief` tool with the full JSON string.
-        ''',
-    description='Generates a structured JSON content brief and saves it.',
+    description='Generates a structured JSON content brief and calls the save_brief tool.',
+    instruction=(
+        'You are a strategic planner. Based on the research provided, define a Content Brief. '
+        'Your output MUST be a valid JSON object with keys: "topic", "target_platform" (e.g., Twitter), '
+        '"keywords", "call_to_action", and "main_talking_points" (list of strings). '
+        'Once generated, you MUST call the `save_brief` tool with the full JSON string.'
+    ),
     tools=[SaveBriefTool]
 )
 
@@ -64,8 +63,11 @@ strategist_agent = Agent(
 generator_agent = Agent(
     model=MODEL_NAME,
     name='Content_Generator_Agent',
-    instruction='You are a professional copywriter. Using the Content Brief from the system state, write a 280-character Twitter post. Focus on the CTA and use the defined keywords.',
     description='Drafts platform-specific content based on a structured brief.',
+    instruction=(
+        'You are a professional copywriter. Using the Content Brief from the system state, write a '
+        '280-character Twitter post. Focus on the CTA and use the defined keywords.'
+    ),
 )
 
 
@@ -84,16 +86,8 @@ root_agent = SequentialAgent(
     ]
 )
 
-# Optional: Add a simple function to run the agent (for testing)
-async def run_marketing_agent(prompt: str):
-    """Runs the main agent with a user prompt."""
-    print(f"--- Running Agent with Prompt: {prompt} ---")
-    
-    # In a full ADK environment, you would use a Runner or Session
-    # For a simple notebook test, you can often call the agent directly (ADK handles the state flow).
-    result = await root_agent(prompt)
-    
-    print("\n--- FINAL RESULT ---")
-    print(result.text)
-    
-# --- END OF agent.py ---
+# This block allows you to run the agent interactively when the file is executed.
+if __name__ == '__main__':
+    # Placeholder for the ADK Runner or Session logic if run independently
+    print("Agent modules defined successfully. Use 'adk run' or a dedicated runner script to execute the agent.")
+    pass
