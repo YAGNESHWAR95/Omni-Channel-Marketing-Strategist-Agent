@@ -41,26 +41,6 @@ def test_debug_agent_schema():
     assert True
 
 def test_orchestrator_structure():
-    """Verify the orchestrator is built correctly."""
-    try:
-        agent = build_orchestrator()
-        # We try to detect the list name dynamically to avoid test failure
-        if hasattr(agent, 'steps'):
-            assert len(agent.steps) == 3
-        elif hasattr(agent, 'agents'):
-            assert len(agent.agents) == 3
-        elif hasattr(agent, 'sequence'):
-            assert len(agent.sequence) == 3
-        else:
-            # Fallback: try to find any list attribute with length 3
-            found = False
-            for attr in dir(agent):
-                val = getattr(agent, attr)
-                if isinstance(val, list) and len(val) == 3:
-                    print(f"Found agent list in attribute: '{attr}'")
-                    found = True
-                    break
-            assert found, "Could not find the list of sub-agents inside the Orchestrator."
-            
-    except Exception as e:
-        pytest.fail(f"Orchestrator build failed: {e}")
+    agent = build_orchestrator()
+    # Check 'sequence'
+    assert len(agent.sequence) == 3
