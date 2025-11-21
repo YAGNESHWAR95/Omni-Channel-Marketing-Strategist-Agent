@@ -3,7 +3,7 @@ This test ensures the core agent logic is defined and importable,
 confirming the main application architecture is structurally sound.
 """
 import pytest
-from agent import root_agent
+from main_agent import root_agent
 
 def test_root_agent_is_sequential_agent():
     """Checks that the main root_agent is defined and is a SequentialAgent, 
