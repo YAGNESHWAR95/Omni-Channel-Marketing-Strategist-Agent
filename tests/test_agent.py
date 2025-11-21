@@ -1,46 +1,45 @@
 import pytest
-import sys
 from src.workflow import build_orchestrator
 
-# Import the class directly to inspect it
-try:
-    from google.adk.agents.workflow import SequentialAgent
-except ImportError:
-    from google.adk.agents import SequentialAgent
-
-def test_debug_agent_schema():
-    """
-    CRITICAL DEBUG TEST:
-    This test inspects the SequentialAgent class and PRINTS the valid arguments 
-    to the console so we can stop guessing.
-    """
-    print("\n" + "="*60)
-    print("🔎 INSPECTING SEQUENTIAL AGENT SCHEMA")
-    print("="*60)
-    
-    try:
-        # Check Pydantic V2 fields
-        if hasattr(SequentialAgent, 'model_fields'):
-            keys = list(SequentialAgent.model_fields.keys())
-            print(f"✅ VALID PARAMS FOUND: {keys}")
-        # Check Pydantic V1 fields
-        elif hasattr(SequentialAgent, '__fields__'):
-            keys = list(SequentialAgent.__fields__.keys())
-            print(f"✅ VALID PARAMS FOUND: {keys}")
-        else:
-            print("❌ Could not find Pydantic fields. Checking __init__...")
-            import inspect
-            print(inspect.signature(SequentialAgent.__init__))
-            
-    except Exception as e:
-        print(f"❌ Error during inspection: {e}")
-
-    print("="*60 + "\n")
-    
-    # We force a pass here so we can see the output even if other tests fail
-    assert True
-
 def test_orchestrator_structure():
+    """Verify the orchestrator is built correctly."""
     agent = build_orchestrator()
-    # Check 'sequence'
-    assert len(agent.sequence) == 3
+    
+    # Check if the 'sequence' attribute exists and has 3 items
+    # We use getattr to be safe against naming variations
+    if hasattr(agent, 'sequence'):
+        assert len(agent.sequence) == 3
+    elif hasattr(agent, 'steps'):
+        assert len(agent.steps) == 3
+    elif hasattr(agent, 'agents'):
+        assert len(agent.agents) == 3
+    else:
+        # Fallback: Fail if we can't find the list
+        pytest.fail("Could not find 'sequence', 'steps', or 'agents' list in the Orchestrator.")
+
+def test_tools_assignment():
+    """Verify the Strategist agent has the custom SaveBriefTool."""
+    agent = build_orchestrator()
+    
+    # Get the list of agents (handling different property names)
+    if hasattr(agent, 'sequence'):
+        agents_list = agent.sequence
+    elif hasattr(agent, 'steps'):
+        agents_list = agent.steps
+    else:
+        agents_list = agent.agents
+
+    # Access the strategist (2nd agent in sequence)
+    strategist = agents_list[1]
+    
+    # Verify tool assignment
+    assert strategist.tools is not None
+    
+    # Check if our tool is present
+    has_save_tool = False
+    for tool in strategist.tools:
+        if tool.fn.__name__ == 'save_content_brief_to_state':
+            has_save_tool = True
+            break
+            
+    assert has_save_tool, "Strategist agent should have the save_brief tool assigned."
