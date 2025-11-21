@@ -4,6 +4,7 @@ from google.adk.agents.workflow import SequentialAgent
 from google.adk.tools import google_search # Built-in tool for RAG
 from google.adk.tools import FunctionTool
 from typing import Dict, Any
+import json
 
 # --- CONFIGURATION (Ensure GOOGLE_API_KEY is set in your .env file) ---
 MODEL_NAME = 'gemini-2.5-flash' # Good balance of speed and capability
