@@ -5,7 +5,7 @@ from src.tools import SaveBriefTool
 
 # 1. Market Research Agent
 research_agent = Agent(
-    model=MODEL_NAME,
+    model=MODEL_NAME,a
     name='Market_Research_Agent',
     description='Specialist in web research and competitive analysis.',
     instruction=(
@@ -20,15 +20,18 @@ research_agent = Agent(
 strategist_agent = Agent(
     model=MODEL_NAME,
     name='Content_Strategist_Agent',
-    description='Generates a structured JSON content brief and calls the save_brief tool.',
+    description='Generates a structured JSON content brief and calls the save tool.',
     instruction=(
         'You are a strategic planner. Based on the research provided, define a Content Brief. '
         'Your output MUST be a valid JSON object with keys: "topic", "target_platform" (e.g., Twitter), '
         '"keywords", "call_to_action", and "main_talking_points" (list of strings). '
-        'Once generated, you MUST call the `save_brief` tool with the full JSON string.'
+        # UPDATED INSTRUCTION BELOW:
+        'Once generated, you MUST call the `save_content_brief_to_state` tool with the full JSON string.'
     ),
     tools=[SaveBriefTool]
 )
+
+# ... (rest of file remains the same)
 
 # 3. Content Generator Agent 
 generator_agent = Agent(
