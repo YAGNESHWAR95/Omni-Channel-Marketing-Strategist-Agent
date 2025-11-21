@@ -9,9 +9,8 @@ dependencies:
     - google-adk
     - google-genai
     - pydantic
-    - google-adk==1.18.0
-    - pytest==8.4.2
-    - asyncio==1.2.0
+    - pytest
+    - asyncio
     - deprecated
     - pandas
     - tabulate
