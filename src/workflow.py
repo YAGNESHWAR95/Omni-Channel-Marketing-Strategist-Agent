@@ -9,6 +9,16 @@ except ImportError:
 
 from src.agents import research_agent, strategist_agent, generator_agent
 
+# DEBUG: Print allowed fields for SequentialAgent in CI logs
+try:
+    import json
+    print("\n===== SequentialAgent Schema =====")
+    print(json.dumps(SequentialAgent.model_json_schema(), indent=2))
+    print("=================================\n")
+except Exception as e:
+    print("Schema debug failed:", e)
+
+
 def build_orchestrator():
     """
     Constructs and returns the main Orchestrator Agent.
