@@ -1,15 +1,6 @@
 # --- ROBUST IMPORT BLOCK ---
 
-
-# TEMP: Print valid fields for SequentialAgent in CI
-try:
-    import json
-    print("\n========== DEBUG: SequentialAgent Schema ==========")
-    print(json.dumps(SequentialAgent.model_json_schema(), indent=2))
-    print("===================================================\n")
-except Exception as e:
-    print("Schema fetch failed:", e)
-
+# First: safely import SequentialAgent
 try:
     from google.adk.agents.workflow import SequentialAgent
 except ImportError:
@@ -18,22 +9,26 @@ except ImportError:
     except ImportError:
         raise ImportError("Could not find SequentialAgent. Ensure 'google-adk' is installed.")
 
-from src.agents import research_agent, strategist_agent, generator_agent
+# Second: NOW we can safely print schema for debugging
+try:
+    import json
+    print("\n========== DEBUG: SequentialAgent Schema ==========")
+    print(json.dumps(SequentialAgent.model_json_schema(), indent=2))
+    print("===================================================\n")
+except Exception as e:
+    print("Schema fetch failed:", e)
 
-# DEBUG: Print allowed fields for SequentialAgent in CI logs
+# Third: import your agents
+from src.agents import research_agent, strategist_agent, generator_agent
 
 
 def build_orchestrator():
-    """
-    Constructs and returns the main Orchestrator Agent.
-    """
     return SequentialAgent(
         name='OmniChannel_Strategist_Orchestrator',
         description='Manages the end-to-end process: research, strategy, and content drafting.',
         steps=[
-            research_agent,        # Step 1: Research
-            strategist_agent,      # Step 2: Strategy & DB Save
-            generator_agent        # Step 3: Final Drafting
+            research_agent,
+            strategist_agent,
+            generator_agent
         ]
     )
-
