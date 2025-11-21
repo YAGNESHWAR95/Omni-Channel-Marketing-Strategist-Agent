@@ -15,19 +15,19 @@ Generate: Produce tailored content drafts for multiple platforms (e.g., a tweet,
 
 This architecture uses the Sequential Agent feature of the Agent Development Kit (ADK) to act as your Orchestrator, ensuring predictable and high-quality output.
 
-<h2>The Orchestrator (Root Agent)</h2>
+<h3>The Orchestrator (Root Agent)</h3>
 The Orchestrator is your main entry point and controls the entire process flow. It is implemented using the SequentialAgent class in ADK.
 Role: Takes the user's high-level goal ("Promote Product X this week"). Instruction: Breaks the goal into research, strategy, and content generation tasks, managing the flow between the specialists.
 
 These agents execute the core business logic. Their inputs are the outputs from the agent preceding them in the sequence.
 
-<h2>Market Research Agent</h2>
+<h3>Market Research Agent</h3>
 Role: Finds current trends, competitor activity, and target audience pain points related to the user's product. Instruction: Use the Google Search tool to gather and summarize 3 key competitive insights.
 
-<h2>Content Strategist Agent</h2>
+<h3>Content Strategist Agent</h3>
 Role: Analyzes research and generates a comprehensive content brief, including keywords, target platform, and tone. Instruction: Based on the research, define the optimal angle and 3 main talking points for the content.
 
-<h2>Content Generator Agent</h2>
+<h3>Content Generator Agent</h3>
 Role: Writes the final, platform-specific marketing copy (e.g., Twitter thread, email subject line). Instruction: Draft the content based only on the Brief provided by the Strategist, adapting the tone for the specified platform.
 
 For a Capstone, adding an Iterative Refinement step makes the agent robust and professional. This requires a Loop Agent or conditional logic implemented via an external agent.
