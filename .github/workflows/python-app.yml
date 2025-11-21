@@ -1,6 +1,5 @@
 name: Python Application Test
 
-# Triggers the workflow on push or pull request events but only for the "main" branch
 on:
   push:
     branches: [ "main" ]
@@ -28,5 +27,8 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run tests
+      # THIS IS THE NEW PART: It injects your secret into the runner
+      env:
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
       run: |
         pytest
