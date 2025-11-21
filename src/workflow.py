@@ -10,17 +10,17 @@ except ImportError:
 
 from src.agents import research_agent, strategist_agent, generator_agent
 
+# ... imports ...
+
 def build_orchestrator():
-    """
-    Constructs and returns the main Orchestrator Agent.
-    """
     return SequentialAgent(
         name='OmniChannel_Strategist_Orchestrator',
-        description='Manages the end-to-end process: research, strategy, and content drafting.',
-        # --- CRITICAL FIX: Use 'steps' instead of 'agents' ---
-        steps=[
-            research_agent,        # Step 1: Research
-            strategist_agent,      # Step 2: Strategy & DB Save
-            generator_agent        # Step 3: Final Drafting
+        description='...',
+        # TRY THIS PARAMETER NAME:
+        sequence=[ 
+            research_agent,
+            strategist_agent,
+            generator_agent
         ]
+    )
     )
