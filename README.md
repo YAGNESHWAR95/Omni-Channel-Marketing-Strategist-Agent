@@ -42,19 +42,19 @@ estate Thesis/Goal (Reflectively)
 Revisit the problem and the goal, but rephrase it to reflect the success of your solution.
 This project successfully demonstrated the power of a multi-agent system to solve the complex bottleneck of omni-channel content ideation and drafting.
 
-Synthesize Key Findings
+<h2>Synthesize Key Findings</h2>
 Do not summarize step-by-step; instead, highlight the most important technical achievements.
 By orchestrating specialized agents—including the use of the Google Search tool for real-time research and a Feedback Loop for quality control—the agent consistently produced structured, platform-ready marketing briefs.
 
-Future Work / Limitations
+<h2>Future Work / Limitations</h2>
 Acknowledge the next steps or constraints, showing awareness of the broader context.
 While currently focused on Twitter and LinkedIn, future iterations will integrate with marketing APIs for direct publishing and incorporate human-in-the-loop feedback for reinforcement learning.
 
-Final Strong Statement
+<h2>Final Strong Statement</h2>
 End with a powerful statement of the agent's contribution to the field or the business.
 The Omni-Channel Marketing Strategist Agent validates the shift from simple automation scripts to robust, autonomous AI systems capable of deep, multi-step business process transformation.
 
-Value Statement (The "Why it Matters")
+<h2>Value Statement (The "Why it Matters")</h2>
 The value statement is a concise, business-focused sentence or paragraph that clearly defines the return on investment (ROI) your agent provides. It is less about how it works and more about the outcome.
 Component	Marketing Agent Example
 Target Customer	Small businesses and independent creators
