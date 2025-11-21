@@ -1,6 +1,6 @@
-import json # F401: Used by save_content_brief_to_state
-import os 
-from typing import Dict, Any
+import json # Used by save_content_brief_to_state function
+
+# Note: os, Dict, and Any imports removed to satisfy Flake8 F401 (unused imports)
 
 from google.adk.agents import Agent
 from google.adk.agents.workflow import SequentialAgent
@@ -13,13 +13,19 @@ MODEL_NAME = 'gemini-2.5-flash'
 ## 1. Define Custom Tool (Structured Output/Mock Integration)
 
 def save_content_brief_to_state(brief_json: str) -> str:
-    """Saves the structured content brief (JSON string) to a simulated database. 
-    This is an example of a custom tool the agent can call."""
+    """
+    Saves the structured content brief (JSON string) to a simulated database. 
+    This is an example of a custom tool the agent can call.
+    """
     try:
-        # F821: This was the original error (fixed by 'import json')
+        # Deserialize the JSON output from the Content Strategist Agent
         brief_data = json.loads(brief_json) 
+        
+        # In a real application, this is where you would write to Firestore or a SQL DB
         print(f"**[Tool Called]** Saving Strategy: Topic='{brief_data.get('topic')}'")
+        
         return "SUCCESS: Content brief saved and ready for the drafting agent."
+    
     except Exception as e:
         return f"ERROR: Failed to parse and save brief. Please ensure output is valid JSON. Error: {e}"
 
