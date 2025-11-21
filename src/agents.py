@@ -1,7 +1,6 @@
 from google.adk.agents import Agent
 from google.adk.tools import google_search
 from src.config import MODEL_NAME
-from google.adk.agents.workflow import SequentialAgent
 from src.tools import SaveBriefTool
 
 # 1. Market Research Agent
