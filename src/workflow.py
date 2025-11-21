@@ -7,16 +7,19 @@ except ImportError:
     except ImportError:
         raise ImportError("Could not find SequentialAgent. Ensure 'google-adk' is installed.")
 
-from src.agents import research_agent, strategist_agent, generator_agent
+# FIX: Import the factory function, not the variables
+from src.agents import create_agents
 
 def build_orchestrator():
     """
     Constructs and returns the main Orchestrator Agent.
     """
+    # FIX: Generate fresh agents for this specific run
+    research_agent, strategist_agent, generator_agent = create_agents()
+
     return SequentialAgent(
         name='OmniChannel_Strategist_Orchestrator',
         description='Manages the end-to-end process: research, strategy, and content drafting.',
-        # --- THE FINAL FIX IS HERE ---
         sub_agents=[
             research_agent,        # Step 1: Research
             strategist_agent,      # Step 2: Strategy & DB Save
