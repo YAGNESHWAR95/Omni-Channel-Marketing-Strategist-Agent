@@ -23,8 +23,9 @@ def test_tools_assignment():
     # Check if our tool is present
     has_save_tool = False
     for tool in strategist.tools:
-        # Check against the function name
-        if tool.fn.__name__ == 'save_content_brief_to_state':
+        # FIX: Check tool.name directly instead of tool.fn.__name__
+        # The ADK automatically sets the tool name to the function name
+        if tool.name == 'save_content_brief_to_state':
             has_save_tool = True
             break
             
