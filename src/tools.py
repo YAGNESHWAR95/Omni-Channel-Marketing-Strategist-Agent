@@ -32,9 +32,7 @@ def save_content_brief_to_state(brief_json: str) -> str:
     except Exception as e:
         return f"ERROR: Failed to save brief. {str(e)}"
 
-# Register the tool
-SaveBriefTool = FunctionTool(
-    name="save_brief", 
-    description="Tool for saving the final structured content brief as a JSON string to the database. Input must be a raw JSON string.",
-    fn=save_content_brief_to_state
-)
+# --- THE FIX IS HERE ---
+# We pass the function directly. The ADK reads the name 'save_content_brief_to_state'
+# and the docstring above automatically.
+SaveBriefTool = FunctionTool(save_content_brief_to_state)
