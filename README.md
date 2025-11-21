@@ -1,4 +1,4 @@
-Problem Statement
+Problem Statement                                                                                                                                                
 Small businesses and independent creators struggle to maintain a consistent, high-quality, and research-backed social media presence due to the time commitment required for competitive analysis, content generation, and platform-specific adaptation. They often resort to generic content that fails to engage their target audience, leading to poor return on investment.
 
 Solution Statement
